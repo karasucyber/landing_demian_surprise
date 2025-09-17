@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V Festival de Kimono — Inscrições</title>
+  <meta name="description" content="Split landing com parallax, vidro e contagem regressiva — Demian Maia Jiu-Jitsu.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <!-- mantém seu styles.css da versão surpresa -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- CSS extra apenas para os TOASTS (pode mover para styles.css se preferir) -->
+  <style>
+    #toast-root{position:fixed;top:18px;right:18px;display:grid;gap:10px;z-index:9999}
+    .toast{display:grid;grid-template-columns:24px 1fr auto;align-items:start;gap:10px;min-width:300px;max-width:min(92vw,420px);padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:linear-gradient(180deg,rgba(25,32,46,.95),rgba(25,32,46,.85));color:#e9eef6;box-shadow:0 16px 50px rgba(0,0,0,.45);animation:toast-in .22s ease-out both}
+    .toast .icon{width:24px;height:24px;display:grid;place-items:center;border-radius:999px}
+    .toast .title{font-weight:800;letter-spacing:.2px;margin-bottom:2px}
+    .toast .msg{color:#b8c3d6;font-size:14px}
+    .toast .close{border:none;background:transparent;color:#9fb0c9;cursor:pointer;font-weight:800;line-height:1;padding:2px 6px;border-radius:8px}
+    .toast .close:hover{color:#fff;background:rgba(255,255,255,.06)}
+    .toast.success{border-color:rgba(56,196,137,.35)} .toast.success .icon{background:rgba(56,196,137,.15)} .toast.success .icon::before{content:"✓";color:#38c489;font-weight:900}
+    .toast.error{border-color:rgba(255,92,92,.35)} .toast.error .icon{background:rgba(255,92,92,.15)} .toast.error .icon::before{content:"✕";color:#ff5c5c;font-weight:900}
+    @keyframes toast-in{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes toast-out{to{opacity:0;transform:translateY(-8px) scale(.98)}}
+    /* pequeno ajuste visual do relógio sob a contagem */
+    .clock{margin-top:12px;font-weight:700;font-size:18px;color:#e8edf6;text-shadow:0 6px 24px rgba(0,0,0,.45)}
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <!-- Left: banner full, parallax -->
+    <div class="left">
+      <div class="bg parallax" aria-hidden="true"></div>
+
+      <div class="headline">
+        <div class="countdown" aria-label="Contagem para o evento">
+          <div class="c-box"><strong id="d">00</strong><span>dias</span></div>
+          <div class="c-box"><strong id="h">00</strong><span>h</span></div>
+          <div class="c-box"><strong id="m">00</strong><span>min</span></div>
+        </div>
+
+        <!-- Relógio ao vivo -->
+        <div class="clock"><span id="now-date">--/--/----</span> — <span id="now-time">--:--:--</span></div>
+      </div>
+    </div>
+
+    <!-- Right: panel glass with form -->
+    <div class="right">
+      <div class="panel" id="inscricao">
+        <header>
+          <div class="tag"><span class="dot"></span> Inscrições abertas</div>
+          <div class="tag">Vagas limitadas</div>
+        </header>
+        <div class="content">
+          <form id="form" class="form">
+            <input class="input full" name="nome" placeholder="Nome completo" required>
+            <input class="input" name="idade" placeholder="Idade" inputmode="numeric" required>
+            <input class="input" name="email" type="email" placeholder="E-mail" required>
+            <input class="input" name="whatsapp" placeholder="WhatsApp (DDD + número)" required>
+            <input class="input" name="faixa" placeholder="Faixa (ex.: branca, azul)">
+            <input class="input" name="peso" placeholder="Peso (kg)" inputmode="decimal">
+
+            <select class="select full" name="filial" required>
+              <option value="" disabled selected>Selecione sua filial</option>
+              <option>Academia Team Goulart</option>
+              <option>Alpha Team</option>
+              <option>Clube Alto de Pinheiros</option>
+              <option>CT Arte Suave</option>
+              <option>Escola CT Barros – ITU</option>
+              <option>Escola de Artes Marciais Parque dos Príncipes</option>
+              <option>Escola Cavina de Jiu Jitsu Brasileiro</option>
+              <option>Jiu Jitsu is Life – Indio</option>
+              <option>Jiu Jitsu Training Lab</option>
+              <option>Matriz (Escola Demian Maia)</option>
+              <option>N&G JIU JITSU</option>
+              <option>Osny Almeida BJJ</option>
+              <option>Vila Jiu Jitsu</option>
+              <option>STUDIO BJJ</option>
+              <option>Strike Machine</option>
+              <option>Outra</option>
+            </select>
+
+            <!-- honeypot anti-spam -->
+            <input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0">
+            <button class="btn full" type="submit" style="grid-column:1/-1">Enviar inscrição</button>
+          </form>
+
+          <div class="subline">
+            <span class="pill">São Paulo — SP</span>
+            <span class="pill">Inscrições on-line</span>
+            <span class="pill">Confirmação por e-mail/WhatsApp</span>
+          </div>
+
+          <p class="helper">Para registrar em planilha Google, substitua a URL do Apps Script em <strong>script.js</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">© 2025 Festival de Kimono — Demian Maia</div>
+
+  <!-- root dos toasts -->
+  <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
