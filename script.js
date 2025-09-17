@@ -1,6 +1,6 @@
 // === CONFIG ===
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbw_0rOfMOgmzb0YFoQIBFmTuKsyfjo1qUEGBKDuE-3-1M2-LQgxopx92RKRL_MsGosiyw/exec"; // troque se publicar nova versão
-const PAYMENT_URL = "https://mpago.la/1rfgxf1";
+const PAYMENT_URL = "https://mpago.la/21bsQZ9";
 
 /* ===== Toast helper ===== */
 function showToast({ title = "Tudo certo!", message = "", type = "success", timeout = 4200 } = {}) {
