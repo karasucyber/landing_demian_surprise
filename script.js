@@ -1,6 +1,6 @@
 // === CONFIG ===
 // !!! IMPORTANTE: Cole aqui o URL da sua API do Google Sheets obtido na Parte 1 !!!
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbyH6ARG5zdVB5KFhSERqQSOkDaxaFiUHnsxOZyML-cqKnSJ3RZ26L5t9LIDwYQV_I8b/exec";
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbz75ZcR9-LAHJqyJfz7vE5-AxRQ4lPnE0uZCkKGrX3flir-sYOYtzFaJZn5SZTGEadH/exec";
 const PAYMENT_URL = "https://mpago.la/21bsQZ9"; // Link de pagamento (se houver)
 
 /* ===== Toast helper ===== */
