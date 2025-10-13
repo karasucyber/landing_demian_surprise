@@ -103,6 +103,36 @@
         // COLE A URL DO SEU APLICATIVO WEB AQUI
         const apiUrl = 'https://script.google.com/macros/s/AKfycbyF3bf4J_bdq1RAwAh0ECk_7NGedAzKwBB6-vMuXdU7HyZesAxR9fFoNkbJSIJAfAvh/exec';
 
+        /**
+         * NOVA FUNÇÃO: Agrupa categorias MIRIM e INFANTIL, removendo a distinção de gênero.
+         * @param {object} categories - O objeto original de categorias da API.
+         * @returns {object} - Um novo objeto com as categorias infantis agrupadas.
+         */
+        function mergeChildCategories(categories) {
+            const mergedCategories = {};
+
+            for (const key in categories) {
+                let newKey = key;
+                const athletes = categories[key];
+
+                // Verifica se a categoria é Mirim ou Infantil
+                if (key.toUpperCase().startsWith('MIRIM') || key.toUpperCase().startsWith('INFANTIL')) {
+                    // Remove as palavras ' MASCULINO' e ' FEMININO' para criar uma chave unificada
+                    newKey = key.replace(/ MASCULINO/gi, '').replace(/ FEMININO/gi, '');
+                }
+
+                // Se a nova chave ainda não existe no objeto agrupado, inicializa como um array vazio
+                if (!mergedCategories[newKey]) {
+                    mergedCategories[newKey] = [];
+                }
+
+                // Adiciona os atletas da categoria original à categoria agrupada
+                mergedCategories[newKey].push(...athletes);
+            }
+
+            return mergedCategories;
+        }
+
         function displayCategories(categories) {
             const container = document.getElementById('container');
             container.innerHTML = '';
@@ -112,7 +142,10 @@
                 return;
             }
 
-            const sortedKeys = Object.keys(categories).sort();
+            // --- ALTERAÇÃO PRINCIPAL: Processa as categorias para agrupar Mirim/Infantil ---
+            const processedCategories = mergeChildCategories(categories);
+
+            const sortedKeys = Object.keys(processedCategories).sort();
             let categoriesFound = false;
 
             if (sortedKeys.length === 0) {
@@ -121,9 +154,8 @@
             }
 
             sortedKeys.forEach(key => {
-                // --- NOVA LÓGICA DE FILTRO ---
                 // Filtra a lista para incluir apenas atletas com pagamento diferente de 'N'
-                const paidAthletes = categories[key].filter(athlete => athlete.statusPagamento !== 'N');
+                const paidAthletes = processedCategories[key].filter(athlete => athlete.statusPagamento !== 'N');
                 
                 // Só exibe a categoria se houver atletas com pagamento confirmado nela
                 if (paidAthletes.length > 0) {
@@ -143,6 +175,9 @@
                             </div>
                         `;
                     } else {
+                        // Ordena os atletas por nome para manter a consistência
+                        paidAthletes.sort((a, b) => a.nome.localeCompare(b.nome));
+                        
                         let rows = '';
                         paidAthletes.forEach((a, i) => {
                             rows += `
@@ -173,7 +208,7 @@
             });
 
             if (!categoriesFound) {
-                 container.innerHTML = '<h2>Nenhuma categoria com atletas com pagamento confirmado.</h2>';
+                container.innerHTML = '<h2>Nenhuma categoria com atletas com pagamento confirmado.</h2>';
             }
         }
 
