@@ -3,237 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chaves - V Festival EDMJJB</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>V Festival EDMJJB - Chaves</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #f9fafb;
             --card-bg: #ffffff;
             --border-color: #e5e7eb;
-            --line-color: #d1d5db;
             --text-primary: #1f2937;
             --text-secondary: #6b7280;
             --accent-color: #0d6efd;
-            --gold-color: #ffc107;
+            --gold-color: #f59e0b;
         }
-
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: var(--bg-color);
+            background: var(--bg-color);
             color: var(--text-primary);
+            padding: 20px;
         }
-
-        h1 { text-align: center; font-weight: 700; }
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
         h2 {
-            text-align: center; font-size: 1.5em; margin-top: 60px;
-            margin-bottom: 30px; border-bottom: 2px solid var(--border-color);
-            padding-bottom: 15px;
+            font-size: 1.4em;
+            margin-top: 40px;
+            color: var(--accent-color);
+            text-align: left;
         }
-        
-        #loader, #error { text-align: center; margin-top: 50px; }
-        #error { color: #dc3545; }
-
-        .bracket-container, .single-athlete-container {
-            width: 100%;
-            overflow-x: auto;
-            padding-bottom: 20px;
-        }
-        .bracket-container::-webkit-scrollbar { height: 8px; }
-        .bracket-container::-webkit-scrollbar-track { background: var(--bg-color); }
-        .bracket-container::-webkit-scrollbar-thumb { background-color: var(--line-color); border-radius: 10px; border: 2px solid var(--bg-color); }
-
-        .bracket { display: flex; flex-direction: row; }
-        .round {
-            display: flex; flex-direction: column; justify-content: space-around;
-            flex-grow: 1; min-width: 180px;
-        }
-
-        .match {
-            display: flex; flex-direction: column; justify-content: center;
-            position: relative; flex-grow: 1; padding: 10px 0;
-        }
-
-        .player {
-            background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 4px; padding: 8px 10px; margin: 4px 0;
-            width: 100%; box-sizing: border-box;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .player .name { font-weight: 600; font-size: 0.9em; }
-        .player .team { font-size: 0.75em; color: var(--text-secondary); }
-        .player.bye { font-style: italic; color: var(--text-secondary); background: #f9fafb; }
-        
-        .match:not(.is-first-round) .player { background: #f0f8ff; }
-        
-        .match-connector { flex-grow: 1; display: flex; align-items: center; position: relative; }
-        .match-connector::before {
-            content: ''; position: absolute; left: -12px; top: 0;
-            bottom: 0; width: 1px; background-color: var(--line-color);
-        }
-        .match-connector::after {
-            content: ''; position: absolute; left: -12px; top: 50%;
-            width: 12px; height: 1px; background-color: var(--line-color);
-        }
-
-        .final .match-connector { display: none; }
-        
-        /* --- NOVO ESTILO PARA ATLETA SOZINHO --- */
-        .single-athlete-card {
+        .category {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        tr:hover td {
+            background: #f9fafb;
+        }
+        .single-athlete {
+            background: var(--card-bg);
             border-left: 5px solid var(--gold-color);
             border-radius: 8px;
             padding: 20px;
-            max-width: 400px;
-            margin: 20px auto;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07);
             text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
-        .single-athlete-card .name { font-size: 1.2em; font-weight: 700; }
-        .single-athlete-card .team { color: var(--text-secondary); margin-top: 5px; }
-        .single-athlete-card .status {
-            margin-top: 15px;
+        .single-athlete .name {
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+        .single-athlete .team {
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        .single-athlete .status {
+            margin-top: 10px;
             font-weight: 600;
             color: var(--gold-color);
         }
-
+        #loader, #error {
+            text-align: center;
+            margin-top: 50px;
+        }
+        #error { color: #dc3545; }
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 0.9em;
+            }
+        }
     </style>
 </head>
 <body>
     <h1>V Festival EDMJJB - Chaves do Campeonato</h1>
     <div id="container">
-        <div id="loader">Carregando atletas e montando chaves...</div>
-        <div id="error"></div>
+        <div id="loader">Carregando atletas e categorias...</div>
+        <div id="error" style="display: none;"></div>
     </div>
 
     <script>
-        // SEU URL da API já está configurado.
-        const apiUrl = 'https://script.google.com/macros/s/AKfycby6arpbjjSfT33nlPn7W9-Q7wlvfd3P5KjpQow_1SV1JsoJ9j8gDAV_6M5M1EicF8ZY/exec';
+        // COLE A URL DO SEU APLICATIVO WEB AQUI
+        const apiUrl = 'https://script.google.com/macros/s/AKfycbyF3bf4J_bdq1RAwAh0ECk_7NGedAzKwBB6-vMuXdU7HyZesAxR9fFoNkbJSIJAfAvh/exec';
 
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-        
         function displayCategories(categories) {
             const container = document.getElementById('container');
             container.innerHTML = '';
-            if (categories.error) { showError({ message: categories.error }); return; }
+
+            if (categories.error) {
+                showError({ message: categories.error });
+                return;
+            }
+
             const sortedKeys = Object.keys(categories).sort();
-            if (sortedKeys.length === 0) { container.innerHTML = '<h2>Nenhum atleta encontrado para as categorias definidas.</h2>'; return; }
-            
+            let categoriesFound = false;
+
+            if (sortedKeys.length === 0) {
+                container.innerHTML = '<h2>Nenhuma categoria com atletas encontrada.</h2>';
+                return;
+            }
+
             sortedKeys.forEach(key => {
-                const athletes = categories[key];
-                const numAthletes = athletes.length;
-
-                // --- MUDANÇA IMPORTANTE AQUI ---
-                // Se tiver apenas 1 atleta, mostra um card especial.
-                if (numAthletes === 1) {
-                    const athlete = athletes[0];
-                    const singleAthleteHTML = `
-                        <div class="single-athlete-container">
-                            <h2>${key} (${numAthletes} atleta)</h2>
-                            <div class="single-athlete-card">
-                                <div class="name">${athlete.nome}</div>
-                                <div class="team">${athlete.equipe}</div>
-                                <div class="status">Único atleta na categoria.</div>
-                            </div>
-                        </div>`;
-                    container.innerHTML += singleAthleteHTML;
-                    return; // Pula para a próxima categoria
-                }
-
-                // Se tiver 2 ou mais atletas, continua com a lógica normal do chaveamento.
-                shuffleArray(athletes);
+                // --- NOVA LÓGICA DE FILTRO ---
+                // Filtra a lista para incluir apenas atletas com pagamento diferente de 'N'
+                const paidAthletes = categories[key].filter(athlete => athlete.statusPagamento !== 'N');
                 
-                const bracketSize = Math.pow(2, Math.ceil(Math.log2(numAthletes)));
-                const numRounds = Math.log2(bracketSize);
-                
-                let matches = [];
-                let byes = bracketSize - numAthletes;
-                let currentAthletes = [...athletes];
+                // Só exibe a categoria se houver atletas com pagamento confirmado nela
+                if (paidAthletes.length > 0) {
+                    categoriesFound = true;
+                    const numAthletes = paidAthletes.length;
 
-                for (let i = 0; i < bracketSize / 2; i++) {
-                    let player1 = null, player2 = null;
-                    if (byes > 0 && (i % 2 !== 0 || currentAthletes.length < 2)) {
-                        player1 = currentAthletes.shift();
-                        player2 = null;
-                        byes--;
-                    } else {
-                        player1 = currentAthletes.shift();
-                        player2 = currentAthletes.shift();
-                    }
-                    matches.push({ p1: player1, p2: player2 });
-                }
-
-                let bracketHTML = `<div class="bracket-container"><h2>${key} (${numAthletes} atletas)</h2><div class="bracket">`;
-                let lastRoundMatches = matches;
-
-                for (let i = 0; i < numRounds; i++) {
-                    bracketHTML += `<div class="round">`;
-                    
-                    let currentRoundMatches = [];
-                    if (i === 0) {
-                        currentRoundMatches = lastRoundMatches;
-                    } else {
-                        for (let j = 0; j < lastRoundMatches.length / 2; j++) {
-                           currentRoundMatches.push({p1: null, p2: null});
-                        }
-                    }
-
-                    currentRoundMatches.forEach(match => {
-                         const p1_name = match.p1 ? match.p1.nome : 'Aguardando...';
-                         const p1_team = match.p1 ? match.p1.equipe : '';
-                         const p2_name = match.p2 ? match.p2.nome : 'Aguardando...';
-                         const p2_team = match.p2 ? match.p2.equipe : '';
-                         const p2_class = match.p2 ? '' : 'bye';
-
-                         bracketHTML += `
-                            <div class="match ${i === 0 ? 'is-first-round' : ''}">
-                                <div class="player">
-                                    <div class="details"><span class="name">${p1_name}</span><br><span class="team">${p1_team}</span></div>
-                                </div>
-                                <div class="player ${p2_class}">
-                                     <div class="details"><span class="name">${p2_name}</span><br><span class="team">${p2_team}</span></div>
+                    if (numAthletes === 1) {
+                        const athlete = paidAthletes[0];
+                        container.innerHTML += `
+                            <div class="category">
+                                <h2>${key} (${numAthletes} atleta)</h2>
+                                <div class="single-athlete">
+                                    <div class="name">${athlete.nome}</div>
+                                    <div class="team">${athlete.equipe}</div>
+                                    <div class="status">Único atleta nesta categoria.</div>
                                 </div>
                             </div>
-                         `;
-                    });
-                    
-                    if (i < numRounds - 1) {
-                        bracketHTML += '</div><div class="match-connector">'.repeat(currentRoundMatches.length / 2);
+                        `;
                     } else {
-                         bracketHTML += '</div>';
+                        let rows = '';
+                        paidAthletes.forEach((a, i) => {
+                            rows += `
+                                <tr>
+                                    <td>${i + 1}</td>
+                                    <td>${a.nome}</td>
+                                    <td>${a.equipe}</td>
+                                </tr>`;
+                        });
+
+                        container.innerHTML += `
+                            <div class="category">
+                                <h2>${key} (${numAthletes} atletas)</h2>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nome</th>
+                                            <th>Equipe</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>${rows}</tbody>
+                                </table>
+                            </div>
+                        `;
                     }
-                     
-                    lastRoundMatches = currentRoundMatches;
                 }
-                bracketHTML += '</div></div>';
-                container.innerHTML += bracketHTML;
             });
+
+            if (!categoriesFound) {
+                 container.innerHTML = '<h2>Nenhuma categoria com atletas com pagamento confirmado.</h2>';
+            }
         }
 
         function showError(error) {
-            const container = document.getElementById('container');
-            container.innerHTML = '';
+            document.getElementById('loader').style.display = 'none';
             const errorDiv = document.getElementById('error');
+            errorDiv.style.display = 'block';
             errorDiv.textContent = 'Ocorreu um erro ao carregar os dados: ' + error.message;
         }
 
         document.addEventListener("DOMContentLoaded", function() {
             fetch(apiUrl)
                 .then(response => {
-                    if (!response.ok) { throw new Error('Erro na rede ou na API: ' + response.statusText); }
+                    if (!response.ok) throw new Error('Não foi possível conectar com a API. Verifique a URL e as permissões do script.');
                     return response.json();
                 })
-                .then(data => { displayCategories(data); })
-                .catch(error => { showError(error); });
+                .then(data => displayCategories(data))
+                .catch(error => showError(error));
         });
     </script>
 </body>
