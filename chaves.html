@@ -71,7 +71,9 @@
             font-size: 1.2em;
             font-weight: 700;
         }
-        .single-athlete .team {
+        /* --- ATUALIZAÇÃO DE ESTILO --- */
+        .single-athlete .team,
+        .single-athlete .belt {
             color: var(--text-secondary);
             margin-top: 5px;
         }
@@ -104,30 +106,49 @@
         const apiUrl = 'https://script.google.com/macros/s/AKfycbyF3bf4J_bdq1RAwAh0ECk_7NGedAzKwBB6-vMuXdU7HyZesAxR9fFoNkbJSIJAfAvh/exec';
 
         /**
-         * NOVA FUNÇÃO: Agrupa categorias MIRIM e INFANTIL, removendo a distinção de gênero.
+         * FUNÇÃO ATUALIZADA: Agrupa MIRIM/INFANTIL (removendo gênero) E SEPARA PELA FAIXA.
          * @param {object} categories - O objeto original de categorias da API.
-         * @returns {object} - Um novo objeto com as categorias infantis agrupadas.
+         * @returns {object} - Um novo objeto com as categorias infantis agrupadas e sub-divididas por faixa.
          */
         function mergeChildCategories(categories) {
             const mergedCategories = {};
 
             for (const key in categories) {
-                let newKey = key;
                 const athletes = categories[key];
+                let baseKey = key; // Chave original (ex: "ADULTO MASCULINO - AZUL - PENA")
 
                 // Verifica se a categoria é Mirim ou Infantil
-                if (key.toUpperCase().startsWith('MIRIM') || key.toUpperCase().startsWith('INFANTIL')) {
-                    // Remove as palavras ' MASCULINO' e ' FEMININO' para criar uma chave unificada
-                    newKey = key.replace(/ MASCULINO/gi, '').replace(/ FEMININO/gi, '');
+                const isChildCategory = key.toUpperCase().startsWith('MIRIM') || key.toUpperCase().startsWith('INFANTIL');
+
+                if (isChildCategory) {
+                    // Cria a chave base unificada (sem gênero)
+                    // ex: "INFANTIL MASCULINO - LEVE" -> "INFANTIL - LEVE"
+                    baseKey = key.replace(/ MASCULINO/gi, '').replace(/ FEMININO/gi, '');
                 }
 
-                // Se a nova chave ainda não existe no objeto agrupado, inicializa como um array vazio
-                if (!mergedCategories[newKey]) {
-                    mergedCategories[newKey] = [];
-                }
+                // Itera sobre os atletas DENTRO da categoria original
+                athletes.forEach(athlete => {
+                    let finalKey = baseKey;
+                    
+                    // Se for categoria infantil, adicionamos a faixa do atleta à chave
+                    // para criar os subgrupos (ex: "INFANTIL - LEVE - FAIXA CINZA")
+                    if (isChildCategory) {
+                        // Padroniza o nome da faixa (ex: "cinza" -> "FAIXA CINZA")
+                        let faixa = (athlete.faixa || 'FAIXA NÃO INFORMADA').toUpperCase();
+                        if (!faixa.startsWith('FAIXA ')) {
+                            faixa = 'FAIXA ' + faixa;
+                        }
+                        finalKey = `${baseKey} - ${faixa}`;
+                    }
+                    
+                    // Se a chave final (ex: "INFANTIL - LEVE - FAIXA CINZA" ou "ADULTO ...") ainda não existe, inicializa
+                    if (!mergedCategories[finalKey]) {
+                        mergedCategories[finalKey] = [];
+                    }
 
-                // Adiciona os atletas da categoria original à categoria agrupada
-                mergedCategories[newKey].push(...athletes);
+                    // Adiciona o atleta a esse grupo específico
+                    mergedCategories[finalKey].push(athlete);
+                });
             }
 
             return mergedCategories;
@@ -142,7 +163,7 @@
                 return;
             }
 
-            // --- ALTERAÇÃO PRINCIPAL: Processa as categorias para agrupar Mirim/Infantil ---
+            // --- Processa as categorias para agrupar Mirim/Infantil E SEPARAR POR FAIXA ---
             const processedCategories = mergeChildCategories(categories);
 
             const sortedKeys = Object.keys(processedCategories).sort();
@@ -164,12 +185,15 @@
 
                     if (numAthletes === 1) {
                         const athlete = paidAthletes[0];
+                        
+                        // --- ATUALIZAÇÃO DO HTML: Adiciona a faixa ---
                         container.innerHTML += `
                             <div class="category">
                                 <h2>${key} (${numAthletes} atleta)</h2>
                                 <div class="single-athlete">
                                     <div class="name">${athlete.nome}</div>
                                     <div class="team">${athlete.equipe}</div>
+                                    <div class="belt">${athlete.faixa}</div>
                                     <div class="status">Único atleta nesta categoria.</div>
                                 </div>
                             </div>
@@ -233,4 +257,4 @@
         });
     </script>
 </body>
-</html>
+</html> 
