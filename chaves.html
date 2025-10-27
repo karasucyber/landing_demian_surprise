@@ -71,7 +71,6 @@
             font-size: 1.2em;
             font-weight: 700;
         }
-        /* --- ATUALIZAÇÃO DE ESTILO --- */
         .single-athlete .team,
         .single-athlete .belt {
             color: var(--text-secondary);
@@ -106,7 +105,7 @@
         const apiUrl = 'https://script.google.com/macros/s/AKfycbyF3bf4J_bdq1RAwAh0ECk_7NGedAzKwBB6-vMuXdU7HyZesAxR9fFoNkbJSIJAfAvh/exec';
 
         /**
-         * FUNÇÃO ATUALIZADA: Agrupa MIRIM/INFANTIL (removendo gênero) E SEPARA PELA FAIXA.
+         * FUNÇÃO ATUALIZADA: Agrupa MIRIM, INFANTIL e INFANTO JUVENIL (removendo gênero) E SEPARA PELA FAIXA.
          * @param {object} categories - O objeto original de categorias da API.
          * @returns {object} - Um novo objeto com as categorias infantis agrupadas e sub-divididas por faixa.
          */
@@ -117,12 +116,16 @@
                 const athletes = categories[key];
                 let baseKey = key; // Chave original (ex: "ADULTO MASCULINO - AZUL - PENA")
 
-                // Verifica se a categoria é Mirim ou Infantil
-                const isChildCategory = key.toUpperCase().startsWith('MIRIM') || key.toUpperCase().startsWith('INFANTIL');
+                // --- MUDANÇA AQUI ---
+                // Verifica se a categoria é Mirim, Infantil OU Infanto Juvenil
+                const keyUpper = key.toUpperCase();
+                const isChildCategory = keyUpper.startsWith('MIRIM') || 
+                                      keyUpper.startsWith('INFANTIL') || 
+                                      keyUpper.startsWith('INFANTO JUVENIL');
 
                 if (isChildCategory) {
                     // Cria a chave base unificada (sem gênero)
-                    // ex: "INFANTIL MASCULINO - LEVE" -> "INFANTIL - LEVE"
+                    // ex: "INFANTO JUVENIL MASCULINO - LEVE" -> "INFANTO JUVENIL - LEVE"
                     baseKey = key.replace(/ MASCULINO/gi, '').replace(/ FEMININO/gi, '');
                 }
 
@@ -130,8 +133,8 @@
                 athletes.forEach(athlete => {
                     let finalKey = baseKey;
                     
-                    // Se for categoria infantil, adicionamos a faixa do atleta à chave
-                    // para criar os subgrupos (ex: "INFANTIL - LEVE - FAIXA CINZA")
+                    // Se for categoria infantil/infanto, adicionamos a faixa do atleta à chave
+                    // para criar os subgrupos (ex: "INFANTO JUVENIL - LEVE - FAIXA CINZA")
                     if (isChildCategory) {
                         // Padroniza o nome da faixa (ex: "cinza" -> "FAIXA CINZA")
                         let faixa = (athlete.faixa || 'FAIXA NÃO INFORMADA').toUpperCase();
@@ -141,7 +144,7 @@
                         finalKey = `${baseKey} - ${faixa}`;
                     }
                     
-                    // Se a chave final (ex: "INFANTIL - LEVE - FAIXA CINZA" ou "ADULTO ...") ainda não existe, inicializa
+                    // Se a chave final (ex: "INFANTO JUVENIL - LEVE - FAIXA CINZA" ou "ADULTO ...") ainda não existe, inicializa
                     if (!mergedCategories[finalKey]) {
                         mergedCategories[finalKey] = [];
                     }
@@ -163,7 +166,7 @@
                 return;
             }
 
-            // --- Processa as categorias para agrupar Mirim/Infantil E SEPARAR POR FAIXA ---
+            // --- Processa as categorias ---
             const processedCategories = mergeChildCategories(categories);
 
             const sortedKeys = Object.keys(processedCategories).sort();
@@ -186,7 +189,6 @@
                     if (numAthletes === 1) {
                         const athlete = paidAthletes[0];
                         
-                        // --- ATUALIZAÇÃO DO HTML: Adiciona a faixa ---
                         container.innerHTML += `
                             <div class="category">
                                 <h2>${key} (${numAthletes} atleta)</h2>
@@ -257,4 +259,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
