@@ -1,262 +1,877 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V Festival EDMJJB - Chaves</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #f9fafb;
-            --card-bg: #ffffff;
-            --border-color: #e5e7eb;
-            --text-primary: #1f2937;
-            --text-secondary: #6b7280;
-            --accent-color: #0d6efd;
-            --gold-color: #f59e0b;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            background: var(--bg-color);
-            color: var(--text-primary);
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-weight: 700;
-        }
-        h2 {
-            font-size: 1.4em;
-            margin-top: 40px;
-            color: var(--accent-color);
-            text-align: left;
-        }
-        .category {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        th, td {
-            padding: 10px 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-        th {
-            background-color: #f3f4f6;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-        tr:hover td {
-            background: #f9fafb;
-        }
-        .single-athlete {
-            background: var(--card-bg);
-            border-left: 5px solid var(--gold-color);
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-        .single-athlete .name {
-            font-size: 1.2em;
-            font-weight: 700;
-        }
-        .single-athlete .team,
-        .single-athlete .belt {
-            color: var(--text-secondary);
-            margin-top: 5px;
-        }
-        .single-athlete .status {
-            margin-top: 10px;
-            font-weight: 600;
-            color: var(--gold-color);
-        }
-        #loader, #error {
-            text-align: center;
-            margin-top: 50px;
-        }
-        #error { color: #dc3545; }
-        @media (max-width: 600px) {
-            table, th, td {
-                font-size: 0.9em;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chaves - 5º FESTIVAL KIMONO 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #000;
+      padding: 20px 0;
+      margin: 0;
+      text-align: center;
+    }
+    .header-section {
+      padding: 20px 0;
+      margin-bottom: 40px;
+    }
+    .tournament-title {
+      font-size: 24px;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    .tournament-subtitle {
+      font-size: 16px;
+      color: #555;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+    
+    /* Classes de Faixa */
+    .faixa-branca { border-left: 5px solid #000; }
+    .faixa-azul { border-left: 5px solid #007bff; }
+    .faixa-roxa { border-left: 5px solid #7a0099; }
+    .faixa-feminina { border-left: 5px solid #ff69b4; }
+    .faixa-roxa-marrom-preta { border-left: 5px solid #4a148c; }
+    .faixa-cinza { border-left: 5px solid #9E9E9E; }
+    .faixa-amarela { border-left: 5px solid #FBC02D; }
+    .faixa-laranja { border-left: 5px solid #F57C00; }
+    .faixa-verde { border-left: 5px solid #388E3C; }
+    .faixa-luta-casada { border-left: 5px solid #D32F2F; }
+
+    .chave-wrapper {
+      padding: 30px 0;
+      margin-bottom: 50px;
+    }
+    .bracket-container {
+      display: flex;
+      justify-content: center;
+      /* --- MUDANÇA PRINCIPAL AQUI --- */
+      align-items: center; /* Alinha os rounds ao centro verticalmente */
+      margin: 0 auto;
+      max-width: 1400px;
+      min-height: 250px;
+      overflow-x: auto; /* Para chaves grandes */
+    }
+    .round {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 50px;
+      min-width: 220px; /* Largura mínima */
+    }
+    .round-title {
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #007bff;
+      text-transform: uppercase;
+    }
+    .match-up {
+      width: 200px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .competitors {
+      border: 1px solid #000;
+      background-color: #fff;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .competitors.final-box {
+      border: 2px solid #007bff;
+    }
+    .fighter {
+      /* --- MUDANÇA AQUI PARA CARDS MAIORES --- */
+      padding: 12px 14px; /* Aumentei o padding */
+      font-size: 0.85em;
+      display: flex;
+      flex-direction: column; /* Para nome e academia */
+      text-align: left; /* Alinhar à esquerda */
+      min-height: 35px; /* Aumentei a altura mínima */
+    }
+    .fighter:first-child {
+      border-bottom: 1px dashed #ccc;
+    }
+    .fighter-name {
+      font-weight: bold;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .fighter-details {
+      font-size: 0.9em; /* Tamanho ajustado */
+      color: #666;
+      font-weight: normal;
+    }
+    .final-name {
+      color: #007bff;
+    }
+  </style>
 </head>
 <body>
-    <h1>V Festival EDMJJB - Chaves do Campeonato</h1>
-    <div id="container">
-        <div id="loader">Carregando atletas e categorias...</div>
-        <div id="error" style="display: none;"></div>
+
+  <div class="header-section">
+    <h1 class="tournament-title">5º FESTIVAL KIMONO 2025</h1>
+    <h3 class="tournament-subtitle">Chaves Oficiais</h3>
+  </div>
+
+  <div class="chave-wrapper faixa-luta-casada">
+    <h3 class="tournament-subtitle">Luta Casada 1</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Carlos Eduardo Cerqueira Campos</span><span class="fighter-details">CT ARTE SUAVE OSASCO</span></div>
+            <div class="fighter"><span class="fighter-name">Arthur Direne</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        // COLE A URL DO SEU APLICATIVO WEB AQUI
-        const apiUrl = 'https://script.google.com/macros/s/AKfycbyF3bf4J_bdq1RAwAh0ECk_7NGedAzKwBB6-vMuXdU7HyZesAxR9fFoNkbJSIJAfAvh/exec';
+  <div class="chave-wrapper faixa-azul faixa-feminina">
+    <h3 class="tournament-subtitle">AZUL FEMININO - até 68 kg</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Campeã (W.O.)</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Vanessa Novaes Ribeiro Roberti</span><span class="fighter-details">Indio</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        /**
-         * FUNÇÃO ATUALIZADA: Agrupa MIRIM, INFANTIL e INFANTO JUVENIL (removendo gênero) E SEPARA PELA FAIXA.
-         * @param {object} categories - O objeto original de categorias da API.
-         * @returns {object} - Um novo objeto com as categorias infantis agrupadas e sub-divididas por faixa.
-         */
-        function mergeChildCategories(categories) {
-            const mergedCategories = {};
+  <div class="chave-wrapper faixa-azul">
+    <h3 class="tournament-subtitle">AZUL MASCULINO - 60-70 KG</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Pietro Angelo</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">André Fernando Rayol junior</span><span class="fighter-details">JIU JITSU TRAINING LAB</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            for (const key in categories) {
-                const athletes = categories[key];
-                let baseKey = key; // Chave original (ex: "ADULTO MASCULINO - AZUL - PENA")
+  <div class="chave-wrapper faixa-azul">
+    <h3 class="tournament-subtitle">AZUL MASCULINO - 70-76 KG</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Campeão (W.O.)</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Nelson Novaes Neto</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                // --- MUDANÇA AQUI ---
-                // Verifica se a categoria é Mirim, Infantil OU Infanto Juvenil
-                const keyUpper = key.toUpperCase();
-                const isChildCategory = keyUpper.startsWith('MIRIM') || 
-                                      keyUpper.startsWith('INFANTIL') || 
-                                      keyUpper.startsWith('INFANTO JUVENIL');
+  <div class="chave-wrapper faixa-azul">
+    <h3 class="tournament-subtitle">AZUL MASCULINO - 76-82 KG / acima 94 Kg</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Luciano akio dos santos</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Anderson Nobuyoshi Kinoshita</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Nicholas Drummond</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Gustavo Gosciola</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S2</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                if (isChildCategory) {
-                    // Cria a chave base unificada (sem gênero)
-                    // ex: "INFANTO JUVENIL MASCULINO - LEVE" -> "INFANTO JUVENIL - LEVE"
-                    baseKey = key.replace(/ MASCULINO/gi, '').replace(/ FEMININO/gi, '');
-                }
+  <div class="chave-wrapper faixa-branca faixa-feminina">
+    <h3 class="tournament-subtitle">BRANCA FEMININO / INF. JUVENIL B (14-15 ANOS - 50-60 KG)</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Lorelay Santana Santos</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Solara Magalhães</span><span class="fighter-details">Falcões Arte Jiu Jitsu</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                // Itera sobre os atletas DENTRO da categoria original
-                athletes.forEach(athlete => {
-                    let finalKey = baseKey;
-                    
-                    // Se for categoria infantil/infanto, adicionamos a faixa do atleta à chave
-                    // para criar os subgrupos (ex: "INFANTO JUVENIL - LEVE - FAIXA CINZA")
-                    if (isChildCategory) {
-                        // Padroniza o nome da faixa (ex: "cinza" -> "FAIXA CINZA")
-                        let faixa = (athlete.faixa || 'FAIXA NÃO INFORMADA').toUpperCase();
-                        if (!faixa.startsWith('FAIXA ')) {
-                            faixa = 'FAIXA ' + faixa;
-                        }
-                        finalKey = `${baseKey} - ${faixa}`;
-                    }
-                    
-                    // Se a chave final (ex: "INFANTO JUVENIL - LEVE - FAIXA CINZA" ou "ADULTO ...") ainda não existe, inicializa
-                    if (!mergedCategories[finalKey]) {
-                        mergedCategories[finalKey] = [];
-                    }
+  <div class="chave-wrapper faixa-branca">
+    <h3 class="tournament-subtitle">BRANCA MASCULINO - 60-70 KG</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">WYLLIAM LEITE DA SILVA</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Richard Cleyton Falcão Souza</span><span class="fighter-details">CT ARTE SUAVE</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Hiago Carvalho Da Costa</span><span class="fighter-details">CT ARTE SUAVE</span></div>
+            <div class="fighter"><span class="fighter-name">(BYE)</span><span class="fighter-details"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Hiago Carvalho Da Costa</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                    // Adiciona o atleta a esse grupo específico
-                    mergedCategories[finalKey].push(athlete);
-                });
-            }
+  <div class="chave-wrapper faixa-branca">
+    <h3 class="tournament-subtitle">BRANCA MASCULINO - 70-76 KG</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Marcos Chavarelli</span><span class="fighter-details">Alpha Team</span></div>
+            <div class="fighter"><span class="fighter-name">Miguel Fernandes Pinto da Silva</span><span class="fighter-details">Falcões Arte & JJ</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Arthur Nascimento Lima</span><span class="fighter-details">Falcões Arte& JJ</span></div>
+            <div class="fighter"><span class="fighter-name">Gabriel Feuerwerker</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S2</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            return mergedCategories;
-        }
+  <div class="chave-wrapper faixa-branca">
+    <h3 class="tournament-subtitle">BRANCA MASCULINO - 76-82 KG</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Raphael Vianni Martinelli</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Pedro Boriollo Vieira</span><span class="fighter-details">Ct ARTE SUAVE OSASCO</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Alan Helu</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">(BYE)</span><span class="fighter-details"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Alan Helu</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function displayCategories(categories) {
-            const container = document.getElementById('container');
-            container.innerHTML = '';
+  <div class="chave-wrapper faixa-branca">
+    <h3 class="tournament-subtitle">BRANCA MASCULINO 88-94 KG e acima 94 KG</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Rafael H. Nicolas</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Paulo Sérgio dos Santos Farias</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">João Gabriel Miranda de Figueiredo</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">(BYE)</span><span class="fighter-details"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">João Gabriel Miranda de Figueiredo</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            if (categories.error) {
-                showError({ message: categories.error });
-                return;
-            }
+  <div class="chave-wrapper faixa-roxa-marrom-preta">
+    <h3 class="tournament-subtitle">ROXA/ MARROM / PRETA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Quartas de Final</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Tiago Andrade Roberti</span><span class="fighter-details">Índio</span></div>
+            <div class="fighter"><span class="fighter-name">Helton Lima de Souza</span><span class="fighter-details">JIU JITSU TRAINING LAB</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Ricardo Nogueira</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Hugo Barreto Neves</span><span class="fighter-details">JIU JITSU TRAINING LAB</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Willian Andrade</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Rafael de Almeida Silva</span><span class="fighter-details">CT ARTE SUAVE OSASCO</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">(BYE)</span><span class="fighter-details"></span></div>
+            <div class="fighter"><span class="fighter-name">(BYE)</span><span class="fighter-details"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor Q1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Vencedor Q2</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor Q3</span></div>
+            <div class="fighter"><span class="fighter-name final-name">(BYE)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S2</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            // --- Processa as categorias ---
-            const processedCategories = mergeChildCategories(categories);
+  <div class="chave-wrapper faixa-amarela">
+    <h3 class="tournament-subtitle">INFANTIL A (8-9 ANOS) - 25-31 KG - FAIXA AMARELA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Enrico Ferreira da Cruz</span><span class="fighter-details">CT ARTE SUAVE OSASCO</span></div>
+            <div class="fighter"><span class="fighter-name">Martin Mendonça Comerian</span><span class="fighter-details">CT ARTE SUAVE OSASCO</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            const sortedKeys = Object.keys(processedCategories).sort();
-            let categoriesFound = false;
+  <div class="chave-wrapper faixa-amarela">
+    <h3 class="tournament-subtitle">INFANTIL A (8-9 ANOS) -31-36 E 36-42 KG - FAIXA AMARELA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Erik Ryu Higa Rodrigues</span><span class="fighter-details">MATRIZ</span></div>
+            <div class="fighter"><span class="fighter-name">Pietro Felipe Rocco Ganem</span><span class="fighter-details">MATRIZ</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Enzo Gabriel Correia dos Reis</span><span class="fighter-details">CT ARTE SUAVE OSASCO</span></div>
+            <div class="fighter"><span class="fighter-name">(BYE)</span><span class="fighter-details"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Enzo Gabriel Correia dos Reis</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            if (sortedKeys.length === 0) {
-                container.innerHTML = '<h2>Nenhuma categoria com atletas encontrada.</h2>';
-                return;
-            }
+  <div class="chave-wrapper faixa-amarela">
+    <h3 class="tournament-subtitle">INF. JUV.B (14-15 ANOS) - 42-48 E 48-55 KG - FAIXA AMARELA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Joaquim Pacheco de Araújo</span><span class="fighter-details">MATRIZ</span></div>
+            <div class="fighter"><span class="fighter-name">Enzo de Sales</span><span class="fighter-details">CT ARTE SUAVE OSASCO</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            sortedKeys.forEach(key => {
-                // Filtra a lista para incluir apenas atletas com pagamento diferente de 'N'
-                const paidAthletes = processedCategories[key].filter(athlete => athlete.statusPagamento !== 'N');
-                
-                // Só exibe a categoria se houver atletas com pagamento confirmado nela
-                if (paidAthletes.length > 0) {
-                    categoriesFound = true;
-                    const numAthletes = paidAthletes.length;
+  <div class="chave-wrapper faixa-amarela">
+    <h3 class="tournament-subtitle">INF. JUVENIL B (14-15 ANOS) - 73-82 KG - FAIXA AMARELA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Thalysson Silva de Souza</span><span class="fighter-details">Studio-MBJJ</span></div>
+            <div class="fighter"><span class="fighter-name">ARTHUR DIRENE</span><span class="fighter-details">MATRIZ</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                    if (numAthletes === 1) {
-                        const athlete = paidAthletes[0];
-                        
-                        container.innerHTML += `
-                            <div class="category">
-                                <h2>${key} (${numAthletes} atleta)</h2>
-                                <div class="single-athlete">
-                                    <div class="name">${athlete.nome}</div>
-                                    <div class="team">${athlete.equipe}</div>
-                                    <div class="belt">${athlete.faixa}</div>
-                                    <div class="status">Único atleta nesta categoria.</div>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        // Ordena os atletas por nome para manter a consistência
-                        paidAthletes.sort((a, b) => a.nome.localeCompare(b.nome));
-                        
-                        let rows = '';
-                        paidAthletes.forEach((a, i) => {
-                            rows += `
-                                <tr>
-                                    <td>${i + 1}</td>
-                                    <td>${a.nome}</td>
-                                    <td>${a.equipe}</td>
-                                    <td>${a.faixa}</td>
-                                </tr>`;
-                        });
+  <div class="chave-wrapper faixa-amarela faixa-feminina">
+    <h3 class="tournament-subtitle">INFANTIL B (10-11 ANOS) - ATÉ 31 KG - FAIXA AMARELA / CINZA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Valentina Hamada</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Ana Luiza Queiroz</span><span class="fighter-details">Studio-MBJJ</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                        container.innerHTML += `
-                            <div class="category">
-                                <h2>${key} (${numAthletes} atletas)</h2>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Nome</th>
-                                            <th>Equipe</th>
-                                            <th>Faixa</th>
+  <div class="chave-wrapper faixa-branca">
+    <h3 class="tournament-subtitle">INFANTIL A (8-9 ANOS) - 25-31 E 31-36 KG - FAIXA BRANCA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Murilo de França Dueli Quirino</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Ricardo Meister Bechara</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Izadora Cassolari Pizzingrilli</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">(BYE)</span><span class="fighter-details"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div classs="fighter"><span class="fighter-name final-name">Izadora Cassolari Pizzingrilli</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>${rows}</tbody>
-                                </table>
-                            </div>
-                        `;
-                    }
-                }
-            });
+  <div class="chave-wrapper faixa-branca">
+    <h3 class="tournament-subtitle">INFANTIL B (10-11 ANOS) - 42-48 KG - FAIXA BRANCA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Davi Rodrigues piropo</span><span class="fighter-details">CT Arte Suave Osasco</span></div>
+            <div class="fighter"><span class="fighter-name">Eric Ferreira Falco</span><span class="fighter-details">CT Arte Suave Osasco</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Davi Alex Ribeiro Lourenço</span><span class="fighter-details">FALCÕES ARTE & JJ</span></div>
+            <div class="fighter"><span class="fighter-name">Lorenzo Pavani gomes</span><span class="fighter-details">CT Arte Suave Osasco</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S2</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            if (!categoriesFound) {
-                container.innerHTML = '<h2>Nenhuma categoria com atletas com pagamento confirmado.</h2>';
-            }
-        }
+  <div class="chave-wrapper faixa-branca">
+    <h3 class="tournament-subtitle">IN. JUV.A (12-13 ANOS) - 48-55E 55-60 KG - FAIXA BRANCA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Kauê Silva Guimarães</span><span class="fighter-details">Falcões Arte Jiu-jitsu</span></div>
+            <div class="fighter"><span class="fighter-name">Leandro Cardoso ll</span><span class="fighter-details">Studio-MBJJ</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Lucas de Oliveira Santana</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">(BYE)</span><span class="fighter-details"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Lucas de Oliveira Santana</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function showError(error) {
-            document.getElementById('loader').style.display = 'none';
-            const errorDiv = document.getElementById('error');
-            errorDiv.style.display = 'block';
-            errorDiv.textContent = 'Ocorreu um erro ao carregar os dados: ' + error.message;
-        }
+  <div class="chave-wrapper faixa-branca">
+    <h3 class="tournament-subtitle">INF. JUV. B (14-15 ANOS) - 42-48 E48-55 KG - FAIXA BRANCA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Matheus Oliveira Duarte</span><span class="fighter-details">Osny Almeida Jiu-Jitsu</span></div>
+            <div class="fighter"><span class="fighter-name">Miguel Sales Oliveira</span><span class="fighter-details">CT Arte Suave Osasco</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch(apiUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error('Não foi possível conectar com a API. Verifique a URL e as permissões do script.');
-                    return response.json();
-                })
-                .then(data => displayCategories(data))
-                .catch(error => showError(error));
-        });
-    </script>
+  <div class="chave-wrapper faixa-cinza">
+    <h3 class="tournament-subtitle">INFANTIL A (8-9 ANOS) - 25-31 KG - FAIXA CINZA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Pedro Gombossy de Azevedo</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Theron Chacon</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chave-wrapper faixa-cinza faixa-feminina">
+    <h3 class="tournament-subtitle">INFANTIL B (10-11 ANOS) - 48-55 KG - FAIXA CINZA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Júlia Moscardi Decker</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Manuela Melchiori Barros Vilar</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chave-wrapper faixa-cinza">
+    <h3 class="tournament-subtitle">INFANTO JUVENIL A (12-13 ANOS) - 36-42 KG - FAIXA CINZA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Isis Zanchetta</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">HENRIQUE BORATINI ROCHA</span><span class="fighter-details">MATRIZ</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Miguel de Oliveira Martins</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">(BYE)</span><span class="fighter-details"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Miguel de Oliveira Martins</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chave-wrapper faixa-cinza">
+    <h3 class="tournament-subtitle">INF. JUV. A (12-13 ANOS) - 42-48 E48-55 KG - FAIXA CINZA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Bruno Silva Poli</span><span class="fighter-details">CT Arte Suave Osasco</span></div>
+            <div class="fighter"><span class="fighter-name">Rafael Nishi Pirutti</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Paulo Cesar Grimaldi</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Zion Fernandes Campos</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S2</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chave-wrapper faixa-cinza faixa-feminina">
+    <h3 class="tournament-subtitle">INFANTO JUVENIL A (12-13 ANOS) - 60-66 KG / B (14-15) - 60-66 KG - FAIXA CINZA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Catarina Roberge Grimaldi</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Helena Colla Domke</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chave-wrapper faixa-cinza">
+    <h3 class="tournament-subtitle">INFANTO JUVENIL B (14-15 ANOS) - 60-66 KG / 73-82 KG - FAIXA CINZA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Davi Rodrigues de Carvalho</span><span class="fighter-details">Studio-MBJJ</span></div>
+            <div class="fighter"><span class="fighter-name">David malik hochman</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chave-wrapper faixa-cinza">
+    <h3 class="tournament-subtitle">INFANTO JUVENIL B (14-15 ANOS) - 94-130 KG - FAIXA CINZA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Campeão (W.O.)</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Gustavo de Souza Saldanha</span><span class="fighter-details">Studio-MBJJ</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chave-wrapper faixa-cinza">
+    <h3 class="tournament-subtitle">MIRIM (6-7 ANOS) - 20-25 KG - FAIXA CINZA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Quartas de Final</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Antonella Hamada</span><span class="fighter-details">MATRIZ</span></div>
+            <div class="fighter"><span class="fighter-name">Lucas Oliveira de Magalhães Paulino</span><span class="fighter-details">MATRIZ</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Pier Zanchetta</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Luca Mazzonetto Cornacchia</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Olivia Goncalves J. Fialho</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Maria Júlia Cicaroni Bevilaqua</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">(BYE)</span><span class="fighter-details"></span></div>
+            <div class="fighter"><span class="fighter-name">(BYE)</span><span class="fighter-details"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor Q1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Vencedor Q2</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor Q3</span></div>
+            <div class="fighter"><span class="fighter-name final-name">(BYE)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S2</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chave-wrapper faixa-cinza">
+    <h3 class="tournament-subtitle">MIRIM (6-7 ANOS) - 25-31 KG - FAIXA CINZA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Lucas Gurgel Nicolas</span><span class="fighter-details">Matriz</span></div>
+            <div class="fighter"><span class="fighter-name">Michel klein sitzer</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chave-wrapper faixa-laranja">
+    <h3 class="tournament-subtitle">INFANTIL B (10-11 ANOS) - 48-55 KG - FAIXA LARANJA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Campeão (W.O.)</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Gabriel Moussi Felix</span><span class="fighter-details">Studio-MBJJ</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chave-wrapper faixa-laranja">
+    <h3 class="tournament-subtitle">INF. JUVENIL A (12-13 ANOS) - 36-42 KG - FAIXA LARANJA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Campeão (W.O.)</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Caio Melloni</span><span class="fighter-details">Osny Almeida Brazilian Jiu-jitsu</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chave-wrapper faixa-laranja">
+    <h3 class="tournament-subtitle">INF. JUVENIL A (12-13 ANOS) - 48-55 / 60-66 / B (14-15) - 48-55 KG - FAIXA LARANJA</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Semifinal</div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Gabriel Moussi Felix</span><span class="fighter-details">Studio-MBJJ</span></div>
+            <div class="fighter"><span class="fighter-name">João Lucas Feitosa Costa</span><span class="fighter-details">Osny Almeida Jiu-Jitsu</span></div>
+          </div>
+        </div>
+        <div class="match-up">
+          <div class="competitors">
+            <div class="fighter"><span class="fighter-name">Arthur Arantes Sales Duarte</span><span class="fighter-details">Osny Almeida Jiu-Jitsu</span></div>
+            <div class="fighter"><span class="fighter-name">Arthur direne Lima</span><span class="fighter-details">Matriz</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-title">Final</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S1</span></div>
+            <div class="fighter"><span class="fighter-name final-name">Vencedor S2</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chave-wrapper faixa-verde">
+    <h3 class="tournament-subtitle">INFANTO JUVENIL A (12-13 ANOS) - 60-66 KG - FAIXA VERDE</h3>
+    <div class="bracket-container">
+      <div class="round">
+        <div class="round-title">Campeão (W.O.)</div>
+        <div class="match-up">
+          <div class="competitors final-box">
+            <div class="fighter"><span class="fighter-name">Arthur Lima Ribeiro</span><span class="fighter-details">Osny Almeida Brazilian Jiu-jitsu</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
