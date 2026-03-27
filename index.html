@@ -37,7 +37,7 @@
       }
 
       .left-image {
-        background: var(--bg-dark) url('IMG_0070.jpg') center  / cover no-repeat;
+        background: var(--bg-dark) url('IMG_0070.jpg') center top / cover no-repeat;
         position: relative;
         height: 100vh;
         width: 100%;
@@ -194,7 +194,35 @@
       transition: color 0.2s;
     }
 
-    .footer-links a:hover { color: #fff; }
+    .footer-links a:hover { color: #fff; text-decoration: underline; }
+
+    .footer { text-align: center; padding: 20px; font-size: 12px; color: #8899aa; }
+
+    #toast-root{position:fixed;top:18px;right:18px;display:grid;gap:10px;z-index:9999} 
+    .toast{display:grid;grid-template-columns:24px 1fr auto;align-items:start;gap:10px;min-width:300px;max-width:min(92vw,420px);padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:linear-gradient(180deg,rgba(25,32,46,.95),rgba(25,32,46,.85));color:#e9eef6;box-shadow:0 16px 50px rgba(0,0,0,.45);animation:toast-in .22s ease-out both} 
+    .toast .icon{width:24px;height:24px;display:grid;place-items:center;border-radius:999px} 
+    .toast .title{font-weight:800;letter-spacing:.2px;margin-bottom:2px} 
+    .toast .msg{color:#b8c3d6;font-size:14px} 
+    .toast .close{border:none;background:transparent;color:#9fb0c9;cursor:pointer;font-weight:800;line-height:1;padding:2px 6px;border-radius:8px} 
+    .toast .close:hover{color:#fff;background:rgba(255,255,255,.06)} 
+    .toast.success{border-color:rgba(56,196,137,.35)} 
+    .toast.success .icon{background:rgba(56,196,137,.15)} 
+    .toast.success .icon::before{content:"✓";color:#38c489;font-weight:900} 
+    .toast.error{border-color:rgba(255,92,92,.35)} 
+    .toast.error .icon{background:rgba(255,92,92,.15)} 
+    .toast.error .icon::before{content:"✕";color:#ff5c5c;font-weight:900} 
+    @keyframes toast-in{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}} 
+    @keyframes toast-out{to{opacity:0;transform:translateY(-8px) scale(.98)}} 
+    .clock{margin-top:12px;font-weight:700;font-size:18px;color:#e8edf6;text-shadow:0 6px 24px rgba(0,0,0,.45)} 
+    .modal-backdrop{position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.55); z-index:9998; backdrop-filter:saturate(140%) blur(4px);} 
+    .modal-backdrop.open{ display:grid; } 
+    .modal{width:min(560px,94vw); background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border:1px solid rgba(255,255,255,.12); border-radius:22px; box-shadow:0 24px 80px rgba(0,0,0,.55); color:#e8edf6; overflow:hidden; animation:toast-in .22s ease-out both;} 
+    .modal header{padding:16px 18px; display:flex;justify-content:space-between;align-items:center; border-bottom:1px solid rgba(255,255,255,.12); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); font-weight:800;} 
+    .modal .body{ padding:16px 18px; display:grid; gap:10px; } 
+    .modal .body .muted{ color:#aab5c6; font-size:14px; } 
+    .modal .footer{padding:16px 18px; display:flex; gap:10px; justify-content:flex-end; border-top:1px solid rgba(255,255,255,.12);} 
+    .btn-primary{appearance:none;border:none;cursor:pointer;font-weight:900;letter-spacing:.3px; background:linear-gradient(180deg, #ffe07a, var(--accent)); color:#11161f; padding:12px 18px; border-radius:999px; box-shadow:0 12px 36px rgba(255,210,74,.35);} 
+    .btn-ghost{appearance:none;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04); color:#e9eef6; padding:12px 16px;border-radius:999px;cursor:pointer;font-weight:800;}
   </style>
 </head>
 <body>
@@ -203,7 +231,7 @@
     <div class="left-image"></div>
 
     <div class="right">
-      <div class="panel">
+      <div class="panel" id="inscricao">
         <div class="event-info">
           <h1>V Festival <br><span style="color:var(--accent)">Sem Kimono</span></h1>
           <div class="date">30 DE MAIO</div>
@@ -228,44 +256,81 @@
           <input class="input" name="Idade" placeholder="Idade" inputmode="numeric" required>
           
           <select class="select" name="Sexo" required>
-              <option value="" disabled selected>Sexo</option>
+              <option value="" disabled selected>Selecione o sexo</option>
               <option>Masculino</option>
               <option>Feminino</option>
           </select>
 
           <input class="input" name="email" type="email" placeholder="E-mail" required>
-          <input class="input" name="whatsapp" placeholder="WhatsApp" required>
+          <input class="input" name="whatsapp" placeholder="WhatsApp (DDD + número)" required>
           
           <select class="select" name="Faixa" required>
-              <option value="" disabled selected>Faixa (No-Gi)</option>
-              <option>Branca</option>
-              <option>Azul</option>
-              <option>Roxa</option>
-              <option>Marrom</option>
-              <option>Preta</option>
+              <option value="" disabled selected>Selecione a faixa (No-Gi)</option>
+              <option value="Branca">Branca</option>
+              <option value="Cinza">Cinza</option>
+              <option value="Amarela">Amarela</option>
+              <option value="Laranja">Laranja</option>
+              <option value="Verde">Verde</option>
+              <option value="Azul">Azul</option>
+              <option value="Roxa">Roxa</option>
+              <option value="Marrom">Marrom</option>
+              <option value="Preta">Preta</option>
           </select>
 
           <input class="input" name="Peso" placeholder="Peso (kg)" inputmode="decimal">
 
           <select class="select full" name="Equipe" required>
-            <option value="" disabled selected>Selecione sua filial</option>
-            <option>Matriz</option>
-            <option>FALCÕES ARTE & JIU JITSU</option>
-            <option>Alpha Team</option>
-            <option>Strike Machine</option>
+              <option value="" disabled selected>Selecione sua filial</option>
+              <option>Matriz</option>
+              <option>FALCÕES ARTE & JIU JITSU</option>
+              <option>Alpha Team</option>
+              <option>Centro de Treinamento Arte Suave Osasco</option>
+              <option>CT Barros</option>
+              <option>Escola Cavina de JiuJitsu</option>
+              <option>Índio Jiu Jitsu</option>
+              <option>Jiu Jitsu Traning Lab</option>
+              <option>N&G Jiu Jitsu</option>
+              <option>Osny Almeida Brazilian Jiu-jitsu</option>
+              <option>Studio-MBJJ</option>
+              <option>Team Maurinho</option>
+              <option>Vila Jiu Jitsu – VJJ</option>
+              <option>Strike Machine</option>
+              <option>Cabeuva MMA</option>
           </select>
 
-          <button class="btn-submit full" type="submit">Confirmar Inscrição</button>
+          <input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0">
+          <button class="btn-submit full" type="submit">Enviar Inscrição</button>
         </form>
 
         <p class="obs">OBS: Válido somente para alunos e filiados da Escola.</p>
         
         <div class="footer-links">
-          <a href="chaves.html">Consultar atletas e chaves</a>
+          <a href="chaves.html">Consultar atletas inscritos e chaves</a>
         </div>
       </div>
     </div>
   </section>
 
+  <div class="footer">© 2026 Festival Sem Kimono — Demian Maia</div>
+
+  <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
+
+  <div id="pay-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="pay-title" aria-hidden="true">
+    <div class="modal">
+      <header>
+        <div id="pay-title">Inscrição registrada</div>
+        <button class="btn-ghost" id="pay-close" aria-label="Fechar">Fechar</button>
+      </header>
+      <div class="body">
+        <div class="muted" id="pay-summary">Obrigado! Confira seus dados e prossiga para o pagamento.</div>
+      </div>
+      <div class="footer">
+        <a id="pay-now" class="btn-primary" rel="noopener" target="_blank">Fazer pagamento</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <noscript><div style="color:#fff;padding:12px">Ative o JavaScript para enviar a inscrição.</div></noscript>
 </body>
 </html>
