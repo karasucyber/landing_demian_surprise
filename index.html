@@ -6,7 +6,6 @@
   <title>V Festival Sem Kimono — Inscrições</title>
   <meta name="description" content="Escola de Jiu Jitsu Brasileiro Demian Maia.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
   <style>
     :root {
       --accent: #ffb400;
@@ -150,6 +149,11 @@
       border-color: var(--accent);
     }
 
+    option {
+      background-color: #0d1b2a;
+      color: #ffffff;
+    }
+
     .full { grid-column: 1 / -1; }
 
     .btn-submit {
@@ -277,7 +281,7 @@
               <option value="Preta">Preta</option>
           </select>
 
-          <input class="input" name="Peso" placeholder="Peso (kg)" inputmode="decimal">
+          <input class="input" name="Peso (kg)" placeholder="Peso (kg)" inputmode="decimal" required>
 
           <select class="select full" name="Equipe" required>
               <option value="" disabled selected>Selecione sua filial</option>
