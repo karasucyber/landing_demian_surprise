@@ -1,7 +1,7 @@
 // === CONFIG ===
 // !!! IMPORTANTE: Cole aqui o URL da sua API do Google Sheets obtido na Parte 1 !!!
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbz75ZcR9-LAHJqyJfz7vE5-AxRQ4lPnE0uZCkKGrX3flir-sYOYtzFaJZn5SZTGEadH/exec";
-const PAYMENT_URL = "https://mpago.la/2AEvKEL"; // Link de pagamento (se houver)
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbz52XepWr1NHf7nJuZxUoCoFw79Wtmw0Ihyz0sULj2-PdqqOA22EmcEGDW3RgU-_kk5Cw/exec";
+const PAYMENT_URL = "https://mpago.la/1quSduw"; // Link de pagamento (se houver)
 
 /* ===== Toast helper ===== */
 function showToast({ title = "Tudo certo!", message = "", type = "success", timeout = 4200 } = {}) {

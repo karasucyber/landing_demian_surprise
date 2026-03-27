@@ -3,127 +3,269 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>V Festival de Kimono — Inscrições</title>
-  <meta name="description" content="Demian Maia Jiu-Jitsu.">
+  <title>V Festival Sem Kimono — Inscrições</title>
+  <meta name="description" content="Escola de Jiu Jitsu Brasileiro Demian Maia.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Estilos para Toasts (avisos) e Modal (janela de confirmação) */
-    #toast-root{position:fixed;top:18px;right:18px;display:grid;gap:10px;z-index:9999} .toast{display:grid;grid-template-columns:24px 1fr auto;align-items:start;gap:10px;min-width:300px;max-width:min(92vw,420px);padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:linear-gradient(180deg,rgba(25,32,46,.95),rgba(25,32,46,.85));color:#e9eef6;box-shadow:0 16px 50px rgba(0,0,0,.45);animation:toast-in .22s ease-out both} .toast .icon{width:24px;height:24px;display:grid;place-items:center;border-radius:999px} .toast .title{font-weight:800;letter-spacing:.2px;margin-bottom:2px} .toast .msg{color:#b8c3d6;font-size:14px} .toast .close{border:none;background:transparent;color:#9fb0c9;cursor:pointer;font-weight:800;line-height:1;padding:2px 6px;border-radius:8px} .toast .close:hover{color:#fff;background:rgba(255,255,255,.06)} .toast.success{border-color:rgba(56,196,137,.35)} .toast.success .icon{background:rgba(56,196,137,.15)} .toast.success .icon::before{content:"✓";color:#38c489;font-weight:900} .toast.error{border-color:rgba(255,92,92,.35)} .toast.error .icon{background:rgba(255,92,92,.15)} .toast.error .icon::before{content:"✕";color:#ff5c5c;font-weight:900} @keyframes toast-in{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}} @keyframes toast-out{to{opacity:0;transform:translateY(-8px) scale(.98)}} .clock{margin-top:12px;font-weight:700;font-size:18px;color:#e8edf6;text-shadow:0 6px 24px rgba(0,0,0,.45)} .modal-backdrop{position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.55); z-index:9998; backdrop-filter:saturate(140%) blur(4px);} .modal-backdrop.open{ display:grid; } .modal{width:min(560px,94vw); background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border:1px solid rgba(255,255,255,.12); border-radius:22px; box-shadow:0 24px 80px rgba(0,0,0,.55); color:#e8edf6; overflow:hidden; animation:toast-in .22s ease-out both;} .modal header{padding:16px 18px; display:flex;justify-content:space-between;align-items:center; border-bottom:1px solid rgba(255,255,255,.12); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); font-weight:800;} .modal .body{ padding:16px 18px; display:grid; gap:10px; } .modal .body .muted{ color:#aab5c6; font-size:14px; } .modal .footer{padding:16px 18px; display:flex; gap:10px; justify-content:flex-end; border-top:1px solid rgba(255,255,255,.12);} .btn-primary{appearance:none;border:none;cursor:pointer;font-weight:900;letter-spacing:.3px; background:linear-gradient(180deg, #ffe07a, var(--accent)); color:#11161f; padding:12px 18px; border-radius:999px; box-shadow:0 12px 36px rgba(255,210,74,.35);} .btn-ghost{appearance:none;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04); color:#e9eef6; padding:12px 16px;border-radius:999px;cursor:pointer;font-weight:800;}
+    :root {
+      --accent: #ffb400;
+      --bg-dark: #0a0c10;
+      --panel-bg: rgba(25, 32, 46, 0.9);
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: #e9eef6;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      min-height: 100vh;
+      background: url('backgroundmobile.png') center top/cover no-repeat;
+      background-attachment: fixed;
+    }
+
+    @media (min-width: 992px) {
+      .hero {
+        grid-template-columns: 1.2fr 1fr;
+        background: var(--bg-dark);
+      }
+
+      .left-image {
+        background: var(--bg-dark) url('IMG_0070.jpg') center  / cover no-repeat;
+        position: relative;
+        height: 100vh;
+        width: 100%;
+      }
+
+      .left-image::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to right, transparent 50%, var(--bg-dark));
+      }
+    }
+
+    .left-image { display: none; }
     
-    /* --- ESTILO PARA O LINK DAS CHAVES --- */
-    .link-chaves {
-        text-align: center;
-        margin-top: 16px;
-        grid-column: 1 / -1; /* Para ocupar a largura total no grid do formulário */
+    @media (min-width: 992px) { 
+      .left-image { display: block; } 
     }
-    .link-chaves a {
-        font-size: 14px;
-        color: #aab5c6; /* Cor sutil */
-        text-decoration: none;
-        transition: color 0.2s ease;
+
+    .right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
-    .link-chaves a:hover {
-        color: #fff; /* Destaque ao passar o mouse */
-        text-decoration: underline;
+
+    @media (min-width: 992px) {
+      .right { padding: 40px; }
     }
-    /* --- FIM DO ESTILO --- */
+
+    .panel {
+      background: var(--panel-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 30px 20px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+    }
+
+    @media (min-width: 992px) {
+      .panel { padding: 40px; }
+    }
+
+    .event-info {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .event-info h1 {
+      font-weight: 900;
+      font-size: 2rem;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      color: #fff;
+    }
+
+    @media (min-width: 992px) {
+      .event-info h1 { font-size: 2.8rem; }
+    }
+
+    .event-info .date {
+      color: var(--accent);
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-top: 5px;
+    }
+
+    .lotes {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .lote-card {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 180, 0, 0.15);
+      text-align: center;
+    }
+
+    .lote-card strong { color: #fff; font-size: 12px; }
+    .lote-card .price { font-size: 20px; font-weight: 900; color: #fff; margin: 4px 0; }
+    .lote-card small { color: #aab5c6; font-size: 11px; }
+
+    .form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .input, .select {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 14px;
+      color: #fff;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .input:focus, .select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .full { grid-column: 1 / -1; }
+
+    .btn-submit {
+      background: linear-gradient(180deg, #ffde73 0%, #ffb400 100%);
+      color: #11161f;
+      font-weight: 900;
+      font-size: 15px;
+      border: none;
+      padding: 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 15px;
+      box-shadow: 0 10px 25px rgba(255, 180, 0, 0.25);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(255, 180, 0, 0.35);
+    }
+
+    .obs {
+      font-size: 11px;
+      color: #8899aa;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .footer-links {
+      text-align: center;
+      margin-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 15px;
+    }
+
+    .footer-links a {
+      color: #aab5c6;
+      font-size: 13px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: #fff; }
   </style>
 </head>
 <body>
 
   <section class="hero">
-    <div class="left">
-      <div class="bg parallax" aria-hidden="true"></div>
-    </div>
+    <div class="left-image"></div>
 
     <div class="right">
-      <div class="panel" id="inscricao">
-        <header>
-          <div class="tag"><span class="dot"></span> Inscrições abertas</div>
-          <div class="tag">Vagas limitadas</div>
-        </header>
-        <div class="content">
-          <form id="form" class="form">
-            <input class="input full" name="Nome" placeholder="Nome completo" required>
-            <input class="input" name="Idade" placeholder="Idade" inputmode="numeric" required>
-            <select class="select" name="Sexo" required>
-                <option value="" disabled selected>Selecione o sexo</option>
-                <option>Masculino</option>
-                <option>Feminino</option>
-            </select>
+      <div class="panel">
+        <div class="event-info">
+          <h1>V Festival <br><span style="color:var(--accent)">Sem Kimono</span></h1>
+          <div class="date">30 DE MAIO</div>
+          <p style="font-size: 12px; color: #888; text-transform:uppercase; letter-spacing:1px; margin-top:5px;">Escola Demian Maia</p>
+        </div>
 
-            <input class="input" name="email" type="email" placeholder="E-mail" required>
-            <input class="input" name="whatsapp" placeholder="WhatsApp (DDD + número)" required>
-            
-            <select class="select" name="Faixa" required>
-                <option value="" disabled selected>Selecione a faixa</option>
-                  <option value="Branca">Branca</option>
-                  <option value="Cinza">Cinza</option>
-                  <option value="Amarela">Amarela</option>
-                  <option value="Laranja">Laranja</option>
-                  <option value="Verde">Verde</option>
-                  <option value="Azul">Azul</option>
-                  <option value="Roxa">Roxa</option>
-                  <option value="Marrom">Marrom</option>
-                  <option value="Preta">Preta</option>
-            </select>
+        <div class="lotes">
+          <div class="lote-card">
+            <strong>1º LOTE</strong>
+            <div class="price">R$ 140</div>
+            <small>até 13/04</small>
+          </div>
+          <div class="lote-card">
+            <strong>2º LOTE</strong>
+            <div class="price">R$ 170</div>
+            <small>até 18/05</small>
+          </div>
+        </div>
 
-            <input class="input" name="Peso (kg)" placeholder="Peso com kimono (kg)" inputmode="decimal">
-
-            <select class="select full" name="Equipe" required>
-              <option value="" disabled selected>Selecione sua filial</option>
-              <option>Matriz</option>
-              <option>FALCÕES ARTE & JIU JITSU</option>
-              <option>Alpha Team</option>
-              <option>Centro de Treinamento Arte Suave Osasco</option>
-              <option>CT Barros</option>
-              <option>Escola Cavina de JiuJitsu</option>
-              <option>Índio Jiu Jitsu</option>
-              <option>Jiu Jitsu Traning Lab</option>
-              <option>N&G Jiu Jitsu</option>
-              <option>Osny Almeida Brazilian Jiu-jitsu</option>
-              <option>Studio-MBJJ</option>
-              <option>Team Maurinho</option>
-              <option>Vila Jiu Jitsu – VJJ</option>
-              <option>Strike Machine</option>
-              <option>Cabeuva MMA</option>
-            </select>
-
-            <input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0">
-            <button class="btn full" type="submit" style="grid-column:1/-1">Enviar inscrição</button>
+        <form id="form" class="form">
+          <input class="input full" name="Nome" placeholder="Nome completo" required>
+          <input class="input" name="Idade" placeholder="Idade" inputmode="numeric" required>
           
-            <div class="link-chaves">
-                <a href="chaves.html">Consultar atletas inscritos e chaves</a>
-            </div>
-            </form>
+          <select class="select" name="Sexo" required>
+              <option value="" disabled selected>Sexo</option>
+              <option>Masculino</option>
+              <option>Feminino</option>
+          </select>
 
-          <div class="subline"></div>
+          <input class="input" name="email" type="email" placeholder="E-mail" required>
+          <input class="input" name="whatsapp" placeholder="WhatsApp" required>
+          
+          <select class="select" name="Faixa" required>
+              <option value="" disabled selected>Faixa (No-Gi)</option>
+              <option>Branca</option>
+              <option>Azul</option>
+              <option>Roxa</option>
+              <option>Marrom</option>
+              <option>Preta</option>
+          </select>
+
+          <input class="input" name="Peso" placeholder="Peso (kg)" inputmode="decimal">
+
+          <select class="select full" name="Equipe" required>
+            <option value="" disabled selected>Selecione sua filial</option>
+            <option>Matriz</option>
+            <option>FALCÕES ARTE & JIU JITSU</option>
+            <option>Alpha Team</option>
+            <option>Strike Machine</option>
+          </select>
+
+          <button class="btn-submit full" type="submit">Confirmar Inscrição</button>
+        </form>
+
+        <p class="obs">OBS: Válido somente para alunos e filiados da Escola.</p>
+        
+        <div class="footer-links">
+          <a href="chaves.html">Consultar atletas e chaves</a>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="footer">© 2025 Festival de Kimono — Demian Maia</div>
-
-  <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
-
-  <div id="pay-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="pay-title" aria-hidden="true">
-    <div class="modal">
-      <header>
-        <div id="pay-title">Inscrição registrada</div>
-        <button class="btn-ghost" id="pay-close" aria-label="Fechar">Fechar</button>
-      </header>
-      <div class="body">
-        <div class="muted" id="pay-summary">Obrigado! Confira seus dados e prossiga para o pagamento.</div>
-      </div>
-      <div class="footer">
-        <a id="pay-now" class="btn-primary" rel="noopener" target="_blank">Fazer pagamento</a>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-  <noscript><div style="color:#fff;padding:12px">Ative o JavaScript para enviar a inscrição.</div></noscript>
 </body>
 </html>
